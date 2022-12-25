@@ -26,6 +26,7 @@ app.add_middleware(
 @app.post("/app/")
 async def load(req: FileProcessingRequest):
     try:
+        logger.info(f"start processing req: {req}")
         TransformationService(req.source_name, req.date).load()
         return FileProcessingResponse(
             source_name=req.source_name, state="Success")

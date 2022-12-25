@@ -7,10 +7,10 @@ WORKDIR /src
 
 RUN mkdir /src/common/ && mkdir /src/transformation_service/ && mkdir /src/configs/
 
-
 COPY ./common/ /src/common/
 COPY ./transformation_service/ /src/transformation_service/
 COPY ./configs/ /src/configs/
+COPY ./storage/ /src/storage/
 
 RUN pip3 install -r transformation_service/requirements.txt
 

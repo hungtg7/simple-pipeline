@@ -13,6 +13,8 @@ services:
       PORT: 8000
     ports:
       - '8000:8000'
+    volumes:
+      - ./storage:/src/storage
   loader-service:
     build:
       context: .
@@ -23,3 +25,5 @@ services:
       - '8001:8001'
     depends_on:
       - postgres
+    volumes:
+      - ./storage:/src/storage

@@ -26,6 +26,7 @@ app.add_middleware(
 @app.post("/app/")
 async def load(req: FileLoaderRequest):
     try:
+        logger.info(f"start loading req: {req}")
         LoaderService(req.source_name, req.date).load()
         return FileLoaderResponse(source_name=req.source_name, state="Success")
     except Exception as e:
