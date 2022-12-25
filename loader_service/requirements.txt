@@ -1,0 +1,6 @@
+pandas
+pyyaml
+SQLAlchemy
+fastapi
+loguru
+uvicorn

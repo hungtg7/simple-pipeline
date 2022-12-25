@@ -1,0 +1,31 @@
+info:
+  raw_data: storage/raw_data/wm
+  modelled_data: storage/modelled_data/wm
+
+transformation_config:
+  new_schema:
+    # TODO: add require field (ex: id)
+    gender:
+      source_name: gender
+    first_name:
+      source_name: first
+    last_name:
+      source_name: last
+    dob:
+      source_name: dob
+    country_code:
+      source_name: ip_address 
+      transform_method:
+        - name: get_country_code
+    app_name:
+      transform_method:
+        - name: add_column_constant
+          param:
+            - amzf
+
+
+loader_config:
+  schema_info:
+    table: users
+  # Further thing to do before load for example join
+  join: TODO

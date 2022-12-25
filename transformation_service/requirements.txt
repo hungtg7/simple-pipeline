@@ -1,0 +1,6 @@
+pandas
+pyyaml
+fastapi
+loguru
+uvicorn
+requests
