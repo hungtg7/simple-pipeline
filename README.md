@@ -12,6 +12,12 @@ This simple project provide a simple data pipline
 * Schema migratioin
 * Provide Upserted
 
+## Services
+* Transform service: Transform `raw_data` to `modelled_data`
+* Loader service: Load `modelled_data` to database
+* Database: postgres
+* Schema Migration: Alembic
+
 ## How to start?
 
 To start whole service run this cmd
