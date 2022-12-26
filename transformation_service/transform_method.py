@@ -1,4 +1,5 @@
 import pandas
+import hashlib
 import requests
 
 
@@ -23,3 +24,15 @@ def get_country_code(val):
         return res.json()["country"]
     except Exception:
         return pandas.np.nan
+
+
+def create_primary_key_base_on_col(df, param):
+    s = ""
+    for p in param:
+        s += df[p]
+
+    return s.apply(hash)
+
+
+def hash(s):
+    return int(hashlib.sha1(s.encode("utf-8")).hexdigest(), 16) % (10 ** 8)

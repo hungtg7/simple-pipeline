@@ -14,7 +14,7 @@ CONFIG_PATH = f"{ROOT_DIR}/configs"
 class LoaderService:
     def __init__(self, source_name: str, date: str):
         self.engine = create_engine(
-            "postgresql+pyscopg2://postgres:postgres@postgres/postgres",
+            "postgresql://postgres:postgres@postgres/postgres",
             # disable default reset-on-return scheme
             pool_reset_on_return=None,
         )
@@ -39,7 +39,29 @@ class LoaderService:
         if not config.get("loader_config"):
             raise Exception("Config is missing loader_config")
 
-        df.to_sql(
-            config["loader_config"]["schema_info"]["table"],
-            engine=self.engine
-        )
+        with self.engine.begin() as conn:
+            columns = config['loader_config']['schema_info']['columns']
+            table_name = config['loader_config']['schema_info']['table']
+            pk = config['loader_config']['schema_info']['pk']
+            # step 1 - create temporary table and upload DataFrame
+            conn.exec_driver_sql(
+                f"CREATE TEMPORARY TABLE temp_table AS " \
+                f"SELECT * FROM {table_name} " \
+                f"WHERE false"
+            )
+            df.to_sql(
+                "temp_table",
+                con=conn,
+                if_exists='append',
+                index=False
+            )
+            # step 2 - merge temp_table into main_table
+            conn.exec_driver_sql(
+                f"""\
+                INSERT INTO {table_name} ({",".join(columns)})
+                SELECT {",".join(columns)} FROM temp_table
+                ON CONFLICT ({pk}) DO
+                    UPDATE SET
+                    {",".join([f'{col} = EXCLUDED.{col}' for col in columns])}
+                """
+            )

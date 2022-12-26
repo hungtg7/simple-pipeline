@@ -21,11 +21,29 @@ transformation_config:
       transform_method:
         - name: add_column_constant
           param:
-            - amzf
-
+            - wm
+    id:
+      source_name: whole
+      transform_method:
+        - name: create_primary_key_base_on_col
+          param:
+            - gender
+            - first_name
+            - last_name
+            - dob
+            - country_code
 
 loader_config:
   schema_info:
     table: users
+    pk: id
+    columns:
+      - id
+      - first_name
+      - last_name
+      - gender
+      - dob
+      - country_code
+      - app_name
   # Further thing to do before load for example join
   join: TODO

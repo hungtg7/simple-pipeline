@@ -4,3 +4,4 @@ SQLAlchemy
 fastapi
 loguru
 uvicorn
+psycopg2==2.9.3

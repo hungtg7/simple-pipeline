@@ -19,7 +19,7 @@ transformation_config:
         - name: get_val_from_dict_by_key
           param:
             - last
-    age:
+    dob:
       source_name: dob
       transform_method:
         - name: get_val_from_dict_by_key
@@ -32,9 +32,28 @@ transformation_config:
         - name: add_column_constant
           param:
             - amzf
+    id:
+      source_name: whole
+      transform_method:
+        - name: create_primary_key_base_on_col
+          param:
+            - gender
+            - first_name
+            - last_name
+            - dob
+            - country_code
 
 loader_config:
   schema_info:
     table: users
+    pk: id
+    columns:
+      - id
+      - first_name
+      - last_name
+      - gender
+      - dob
+      - country_code
+      - app_name
   # Further thing to do before load for example join
   join: TODO

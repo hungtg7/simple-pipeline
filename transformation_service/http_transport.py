@@ -11,7 +11,7 @@ app = FastAPI()
 
 origins = [
     "http://localhost",
-    "http://localhost:8080",
+    "http://localhost:8000",
 ]
 
 app.add_middleware(
@@ -23,14 +23,19 @@ app.add_middleware(
 )
 
 
+@app.get("/ping/")
+async def ping():
+    return "Hello"
+
+
 @app.post("/app/")
 async def load(req: FileProcessingRequest):
     try:
         logger.info(f"start processing req: {req}")
-        TransformationService(req.source_name, req.date).load()
+        TransformationService(req.source_name, req.date).processing_file()
         return FileProcessingResponse(
             source_name=req.source_name, state="Success")
     except Exception as e:
-        logger.Exception(e)
+        logger.error(e)
         return FileProcessingResponse(
             source_name=req.source_name, state="Failed")

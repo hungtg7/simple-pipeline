@@ -56,6 +56,9 @@ class TransformationService:
                     # Add constant value for a column case
                     df[col] = func(method["param"][0])
                     continue
+                elif sc_name == "whole":
+                    df[col] = func(df, method.get("param", []))
+                    continue
 
                 df[col] = df[sc_name].apply(func, args=method.get("param", []))
 

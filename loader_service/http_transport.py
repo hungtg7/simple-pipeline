@@ -11,7 +11,7 @@ app = FastAPI()
 
 origins = [
     "http://localhost",
-    "http://localhost:8080",
+    "http://localhost:8001",
 ]
 
 app.add_middleware(
@@ -24,11 +24,11 @@ app.add_middleware(
 
 
 @app.post("/app/")
-async def load(req: FileLoaderRequest):
+async def load(req: FileLoaderRequest) -> FileLoaderResponse:
     try:
         logger.info(f"start loading req: {req}")
         LoaderService(req.source_name, req.date).load()
         return FileLoaderResponse(source_name=req.source_name, state="Success")
     except Exception as e:
-        logger.Exception(e)
+        logger.error(e)
         return FileLoaderResponse(source_name=req.source_name, state="Failed")
